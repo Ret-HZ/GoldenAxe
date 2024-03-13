@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Golden_Axe.CDIExplorer.CDIExplorerFileUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Golden_Axe.CDIExplorer"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="100">
+    
+    <Grid Margin="0,0,0,20" Height="100" Width="100" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".70*"/>
+            <RowDefinition Height=".30*"/>
+        </Grid.RowDefinitions>
+
+        <Image x:Name="img_Thumbnail" Grid.Row="0" Source="/Resources/Icons/File.png" RenderOptions.BitmapScalingMode="NearestNeighbor" Width="60" Height="60" HorizontalAlignment="Center"/>
+        <Rectangle x:Name="rectangle_SelectionImage" Stretch="Fill" Fill="Transparent" Opacity="0.1"/>
+        <Label Grid.Row="1" HorizontalContentAlignment="Center">
+            <TextBlock x:Name="txt_FileName" TextWrapping="WrapWithOverflow"/>
+        </Label>
+    </Grid>
+</UserControl>

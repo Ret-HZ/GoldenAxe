@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>Golden_Axe</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Icons\ArrowNext.png" />
+    <None Remove="Resources\Icons\ArrowPrevious.png" />
+    <None Remove="Resources\Icons\file.png" />
+    <None Remove="Resources\Icons\folder.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AceUtils\AceUtils.csproj" />
+    <ProjectReference Include="..\LibCDI\LibCDI.csproj" />
+    <ProjectReference Include="..\LibMES\LibMES.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icons\ArrowNext.png" />
+    <Resource Include="Resources\Icons\ArrowPrevious.png" />
+    <Resource Include="Resources\Icons\File.png" />
+    <Resource Include="Resources\Icons\Folder.png" />
+  </ItemGroup>
+
+</Project>
