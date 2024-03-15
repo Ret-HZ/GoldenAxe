@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using AceUtils.CDI.Enum;
+using System.Collections.Generic;
 
-namespace LibCDI
+namespace AceUtils.CDI
 {
     public class CDI
     {
-        public CDI() 
+        public CDI()
         {
             Folders = new Dictionary<string, CDIFolder>();
         }
 
-        public CDI (CDIVersion version) : this()
+        public CDI(CDIVersion version) : this()
         {
             Version = version;
         }
@@ -31,7 +32,7 @@ namespace LibCDI
         public List<CDIFolder> GetFolders()
         {
             List<CDIFolder> returnList = new List<CDIFolder>();
-            foreach(KeyValuePair<string, CDIFolder> kvp in Folders)
+            foreach (KeyValuePair<string, CDIFolder> kvp in Folders)
             {
                 returnList.Add(kvp.Value);
             }

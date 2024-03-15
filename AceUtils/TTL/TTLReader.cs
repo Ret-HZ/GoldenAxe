@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Yarhl.IO;
 
-namespace LibMES
+namespace AceUtils.TTL
 {
     public static class TTLReader
     {
         /// <summary>
         /// Reads a message TTL file.
         /// </summary>
-        /// <param name="datastream"></param>
-        /// <returns>A TTL object.</returns>
+        /// <param name="datastream">The <see cref="DataStream"/>.</param>
+        /// <returns>A <see cref="TTL"/> object.</returns>
         private static TTL ReadTTL(DataStream datastream)
         {
             var reader = new DataReader(datastream)
@@ -36,7 +35,7 @@ namespace LibMES
                 reader.Stream.PushToPosition(0x10);
             }
 
-            while(true)
+            while (true)
             {
                 uint characterNumeric = reader.ReadUInt16();
                 if (characterNumeric == 0) break;
@@ -58,7 +57,7 @@ namespace LibMES
         /// <param name="fileBytes">The TTL file as byte array.</param>
         /// <param name="offset">The location in the array to start reading data from.</param>
         /// <param name="length">The number of bytes to read from the array.</param>
-        /// <returns>A TTL object.</returns>
+        /// <returns>A <see cref="TTL"/> object.</returns>
         public static TTL ReadTTL(byte[] fileBytes, int offset = 0, int length = 0)
         {
             if (length == 0) length = fileBytes.Length;
@@ -69,12 +68,11 @@ namespace LibMES
         }
 
 
-
         /// <summary>
         /// Reads a message TTL file.
         /// </summary>
-        /// <param name="stream">The TTL file as stream.</param>
-        /// <returns>A TTL object.</returns>
+        /// <param name="stream">The TTL file as <see cref="Stream"/>.</param>
+        /// <returns>A <see cref="TTL"/> object.</returns>
         public static TTL ReadTTL(Stream stream)
         {
             using (var datastream = DataStreamFactory.FromStream(stream))
@@ -84,12 +82,11 @@ namespace LibMES
         }
 
 
-
         /// <summary>
         /// Reads a message TTL file.
         /// </summary>
         /// <param name="path">The path to the TTL file.</param>
-        /// <returns>A TTL object.</returns>
+        /// <returns>A <see cref="TTL"/> object.</returns>
         public static TTL ReadTTL(string path)
         {
             using (var datastream = DataStreamFactory.FromFile(path, FileOpenMode.Read))

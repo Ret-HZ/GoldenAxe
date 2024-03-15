@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LibCDI
+namespace AceUtils.CDI
 {
     internal static class CDIDummyFiles
     {

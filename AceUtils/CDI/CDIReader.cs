@@ -1,9 +1,10 @@
-﻿using System;
+﻿using AceUtils.CDI.Enum;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Yarhl.IO;
 
-namespace LibCDI
+namespace AceUtils.CDI
 {
     public static class CDIReader
     {

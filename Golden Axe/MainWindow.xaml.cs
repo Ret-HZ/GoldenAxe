@@ -1,4 +1,5 @@
-﻿using LibCDI;
+﻿using AceUtils.CDI;
+using AceUtils.CDI.Enum;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using System.Windows;

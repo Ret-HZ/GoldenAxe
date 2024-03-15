@@ -1,4 +1,4 @@
-﻿namespace LibCDI
+﻿namespace AceUtils.CDI.Enum
 {
     public enum CDIVersion
     {

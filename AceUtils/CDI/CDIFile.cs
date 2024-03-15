@@ -2,7 +2,7 @@
 using System.IO;
 using Yarhl.IO;
 
-namespace LibCDI
+namespace AceUtils.CDI
 {
     public class CDIFile
     {
@@ -138,7 +138,7 @@ namespace LibCDI
                             }
                             Content = ms.ToArray();
                         }
-                        
+
                     }
                     else
                     {

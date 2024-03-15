@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SharpZipLib.NETStandard" Version="1.0.7" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.2" />
     <PackageReference Include="Yarhl" Version="3.1.0" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LibMES
+namespace AceUtils.MES
 {
     public class MES
     {

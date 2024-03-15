@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace LibCDI
+namespace AceUtils.CDI
 {
     public class CDIFolder
     {
-        public CDIFolder() 
+        public CDIFolder()
         {
             Files = new Dictionary<string, CDIFile>();
         }
@@ -23,7 +23,7 @@ namespace LibCDI
         /// Allocated space for the folder contents.
         /// </summary>
         internal uint AllocatedSpace { get; set; }
-        
+
         /// <summary>
         /// Folder contents.
         /// </summary>

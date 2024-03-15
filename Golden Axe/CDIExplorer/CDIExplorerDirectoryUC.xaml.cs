@@ -1,4 +1,4 @@
-﻿using LibCDI;
+﻿using AceUtils.CDI;
 using System.Collections.Generic;
 using System.Windows.Controls;
 

@@ -22,8 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AceUtils\AceUtils.csproj" />
-    <ProjectReference Include="..\LibCDI\LibCDI.csproj" />
-    <ProjectReference Include="..\LibMES\LibMES.csproj" />
   </ItemGroup>
 
   <ItemGroup>
