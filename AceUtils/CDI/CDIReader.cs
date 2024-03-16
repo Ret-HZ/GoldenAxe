@@ -79,7 +79,7 @@ namespace AceUtils.CDI
                         else
                         {
                             int fileSize = reader.ReadInt32() - 0x4;
-                            file.Content = reader.ReadBytes(fileSize);
+                            file.SetContentRaw(reader.ReadBytes(fileSize));
                         }
 
                         folder.Files.Add(file.Name, file);

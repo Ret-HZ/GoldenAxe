@@ -37,7 +37,7 @@ namespace Golden_Axe.CDIExplorer
 
         private void UpdateFooterSelectionInfo(CDIFile file)
         {
-            lbl_FooterSelectionInfo.Content = $"Selected file is {Util.FormatBytes(file.GetContentSize())}";
+            lbl_FooterSelectionInfo.Content = $"Selected file is {Util.FormatBytes(file.GetContentSize())} | Compressed: {(file.IsCompressed ? "Yes" : "No")}";
         }
 
 

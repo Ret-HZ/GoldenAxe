@@ -134,5 +134,12 @@ namespace Golden_Axe.CDIExplorer
 
             UpdateThumbnail();
         }
+
+
+        private void mi_FileCompression_Click(object sender, RoutedEventArgs e)
+        {
+            File.SetCompression(!File.IsCompressed);
+            Parent.NewSelection(this);
+        }
     }
 }

@@ -12,6 +12,7 @@
             <ContextMenu x:Name="contextmenu_File" StaysOpen="False">
                 <MenuItem x:Name="mi_FileExtract" Header="Extract" Click="mi_FileExtract_Click"/>
                 <MenuItem x:Name="mi_FileImport" Header="Import" Click="mi_FileImport_Click"/>
+                <MenuItem x:Name="mi_FileCompression" Header="Toggle Compression" Click="mi_FileCompression_Click"/>
             </ContextMenu>
         </Grid.ContextMenu>
 
