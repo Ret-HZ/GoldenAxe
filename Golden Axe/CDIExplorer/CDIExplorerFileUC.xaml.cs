@@ -23,7 +23,12 @@ namespace Golden_Axe.CDIExplorer
             Parent = parent;
             File = file;
             txt_FileName.Text = File.Name;
+            UpdateThumbnail();
+        }
 
+
+        private void UpdateThumbnail()
+        {
             if (File.GetExtension() == "PDW")
             {
                 img_Thumbnail.Source = Util.BitmapToImageSource(PDWReader.ReadPDW(File.GetContent()).GetBitmap());
@@ -86,6 +91,48 @@ namespace Golden_Axe.CDIExplorer
             {
                 Parent.NewSelection(this);
             }
+        }
+
+
+        private void Grid_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            if (!IsSelected)
+            {
+                Parent.NewSelection(this);
+            }
+        }
+
+
+        private void mi_FileExtract_Click(object sender, RoutedEventArgs e)
+        {
+            string extension = File.GetExtension();
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = File.GetNameWithoutExtension();
+            dlg.DefaultExt = extension;
+            dlg.Filter = $"{extension} (*.{extension})|*.{extension}|All types (*.*)|*.*";
+
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                System.IO.File.WriteAllBytes(dlg.FileName, File.GetContent());
+            }
+        }
+
+
+        private void mi_FileImport_Click(object sender, RoutedEventArgs e)
+        {
+            string extension = File.GetExtension();
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = $"{extension} (*.{extension})|*.{extension}|All types (*.*)|*.*";
+
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                byte[] content = System.IO.File.ReadAllBytes(dlg.FileName);
+                File.SetContent(content);
+            }
+
+            UpdateThumbnail();
         }
     }
 }

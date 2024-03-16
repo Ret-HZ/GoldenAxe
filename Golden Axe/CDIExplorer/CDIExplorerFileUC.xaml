@@ -7,7 +7,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100">
     
-    <Grid Margin="0,0,0,20" Height="100" Width="100" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+    <Grid Margin="0,0,0,20" Height="100" Width="100" MouseLeftButtonDown="Grid_MouseLeftButtonDown" ContextMenuOpening="Grid_ContextMenuOpening">
+        <Grid.ContextMenu>
+            <ContextMenu x:Name="contextmenu_File" StaysOpen="False">
+                <MenuItem x:Name="mi_FileExtract" Header="Extract" Click="mi_FileExtract_Click"/>
+                <MenuItem x:Name="mi_FileImport" Header="Import" Click="mi_FileImport_Click"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
+
         <Grid.RowDefinitions>
             <RowDefinition Height=".70*"/>
             <RowDefinition Height=".30*"/>
