@@ -91,6 +91,10 @@ namespace AceUtils.CDI
                 regfile.Folders.Add(folder.Name, folder);
             }
 
+            //Read audio section
+            reader.Stream.Seek(ptrAudioSection);
+            regfile.AudioData = reader.ReadBytes(regfileSize - ptrAudioSection);
+
             return regfile;
         }
 
