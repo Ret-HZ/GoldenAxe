@@ -5,12 +5,12 @@ namespace AceUtils.CDI
 {
     public class CDI
     {
-        public CDI()
+        internal CDI()
         {
             Folders = new Dictionary<string, CDIFolder>();
         }
 
-        public CDI(CDIVersion version) : this()
+        internal CDI(CDIVersion version) : this()
         {
             Version = version;
         }

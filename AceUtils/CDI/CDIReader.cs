@@ -20,7 +20,7 @@ namespace AceUtils.CDI
                 Endianness = EndiannessMode.LittleEndian,
             };
 
-            CDI regfile = new CDI();
+            CDI regfile = new CDI(version);
 
             string magic = reader.ReadString(4);
             if (magic != "RGF.")

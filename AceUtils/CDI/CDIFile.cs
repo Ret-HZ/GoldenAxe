@@ -130,6 +130,16 @@ namespace AceUtils.CDI
 
 
         /// <summary>
+        /// Returns the raw content size.
+        /// </summary>
+        public int GetContentSizeRaw()
+        {
+            if (IsDummy) return 0;
+            return Content.Length;
+        }
+
+
+        /// <summary>
         /// Enables or disables compression for this file.
         /// </summary>
         public void SetCompression(bool useCompression)
