@@ -29,9 +29,12 @@ namespace Golden_Axe.CDIExplorer
 
         private void UpdateThumbnail()
         {
-            if (File.GetExtension() == "PDW")
+            if (!File.IsDummy)
             {
-                img_Thumbnail.Source = Util.BitmapToImageSource(PDWReader.ReadPDW(File.GetContent()).GetBitmap());
+                if (File.GetExtension() == "PDW")
+                {
+                    img_Thumbnail.Source = Util.BitmapToImageSource(PDWReader.ReadPDW(File.GetContent()).GetBitmap());
+                }
             }
         }
 
