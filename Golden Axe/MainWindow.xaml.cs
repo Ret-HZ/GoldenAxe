@@ -13,6 +13,8 @@ namespace Golden_Axe
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        CDIExplorer.CDIExplorerUC explorer;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -105,11 +107,34 @@ namespace Golden_Axe
 
         private void OpenRegfile(CDIVersion version, string path)
         {
+            grid_Explorer.Children.Clear();
             CDI regfile = CDIReader.ReadCDI(version, path);
-            CDIExplorer.CDIExplorerUC explorer = new CDIExplorer.CDIExplorerUC(regfile);
+            explorer = new CDIExplorer.CDIExplorerUC(regfile);
             Grid.SetRow(explorer, 0);
             Grid.SetColumn(explorer, 0);
             grid_Explorer.Children.Add(explorer);
+            mi_SaveRegfile.IsEnabled = true;
+        }
+
+
+        private void SaveRegfile(string path)
+        {
+            CDIWriter.WriteCDIToFile(explorer.REGFILE, path);
+        }
+
+
+        private void mi_SaveRegfile_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.FileName = "REGFILE";
+            dlg.DefaultExt = ".CDI";
+            dlg.Filter = "REGFILE Archives (*.CDI)|*.CDI|All files (*.*)|*.*";
+
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                SaveRegfile(dlg.FileName);
+            }
         }
     }
 }
