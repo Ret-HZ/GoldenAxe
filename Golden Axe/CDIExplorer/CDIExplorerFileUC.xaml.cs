@@ -61,9 +61,7 @@ namespace Golden_Axe.CDIExplorer
             {
                 case "PDW":
                     {
-                        PDW pdw = PDWReader.ReadPDW(File.GetContent());
-                        pdw.Name = File.GetNameWithoutExtension();
-                        PDWEditorWindow pdwEditor = new PDWEditorWindow(pdw);
+                        PDWEditorWindow pdwEditor = new PDWEditorWindow(File);
                         pdwEditor.Show();
                         break;
                     }

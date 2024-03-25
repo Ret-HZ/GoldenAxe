@@ -1,4 +1,5 @@
-﻿using AceUtils.PDW;
+﻿using AceUtils.CDI;
+using AceUtils.PDW;
 using MahApps.Metro.Controls;
 using System;
 using System.Drawing;
@@ -14,13 +15,15 @@ namespace Golden_Axe.PDWEditor
     /// </summary>
     public partial class PDWEditorWindow : MetroWindow
     {
+        CDIFile File;
         PDW PDW;
 
-        public PDWEditorWindow(PDW pdw)
+        public PDWEditorWindow(CDIFile file)
         {
             InitializeComponent();
-            PDW = pdw;
-            Title = $"{pdw.Name}";
+            File = file;
+            PDW = PDWReader.ReadPDW(File.GetContent());
+            Title = $"{File.Name}";
             SetInfoLabels();
             SetImage();
         }
@@ -54,7 +57,7 @@ namespace Golden_Axe.PDWEditor
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = PDW.Name;
+            dlg.FileName = File.GetNameWithoutExtension();
             dlg.DefaultExt = ".png";
             dlg.Filter = "PNG (.png)|*.png";
 
@@ -68,7 +71,18 @@ namespace Golden_Axe.PDWEditor
 
         private void btn_Import_Click(object sender, RoutedEventArgs e)
         {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "PNG (*.png)|*.png|All types (*.*)|*.*";
 
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                Bitmap bitmap = new Bitmap(dlg.FileName);
+                PDW.SetBitmap(bitmap);
+                SetImage();
+                SetInfoLabels();
+                File.SetContent(PDWWriter.WritePDWToArray(PDW));
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AceUtils.PDW.Enum;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace AceUtils.PDW
@@ -9,11 +10,6 @@ namespace AceUtils.PDW
         {
 
         }
-
-        /// <summary>
-        /// File name.
-        /// </summary>
-        public string Name;
 
         /// <summary>
         /// Amount of textures in the PDW.
@@ -72,6 +68,18 @@ namespace AceUtils.PDW
         internal Bitmap Bitmap;
 
 
+
+        /// <summary>
+        /// Updates PDW data from the currently assigned bitmap.
+        /// </summary>
+        private void UpdateData()
+        {
+            if (Bitmap == null) return;
+            Height = (ushort)Bitmap.Height;
+            Width = (ushort)Bitmap.Width;
+        }
+
+
         /// <summary>
         /// Gets the texture as a <see cref="System.Drawing.Bitmap"./>
         /// </summary>
@@ -79,6 +87,55 @@ namespace AceUtils.PDW
         public Bitmap GetBitmap()
         {
             return new Bitmap(Bitmap);
+        }
+
+
+        /// <summary>
+        /// Sets the texture from a <see cref="System.Drawing.Bitmap"./>
+        /// </summary>
+        /// <param name="bitmap">The <see cref="System.Drawing.Bitmap"/>.</param>
+        public void SetBitmap(Bitmap bitmap)
+        {
+            //Check the whole palette and convert to 8bpp if the color amount goes above 256
+            List<int> colors = new List<int>();
+            for (int h = 0; h < bitmap.Height; h++)
+            {
+                for (int w = 0; w < bitmap.Width; w++)
+                {
+                    int col = bitmap.GetPixel(w, h).ToArgb();
+                    if (!colors.Contains(col))
+                        colors.Add(col);
+                }
+            }
+
+            if (colors.Count > 16) PixelFormat = PDWPixelFormat.RGBA8bpp;
+
+            if (colors.Count <= 256)
+            {
+                this.Bitmap = bitmap;
+                UpdateData();
+                return;
+            }
+
+            //Convert the bitmap to 8bpp
+            Bitmap copy = new Bitmap(bitmap); //Copy to fix Clone()
+            Bitmap converted8bppNoAlpha = copy.Clone(new Rectangle(0, 0, copy.Width, copy.Height), System.Drawing.Imaging.PixelFormat.Format8bppIndexed); //Converted palette to 8bpp but alpha is lost
+            Bitmap convertedWithAlpha = converted8bppNoAlpha.Clone(new Rectangle(0, 0, converted8bppNoAlpha.Width, converted8bppNoAlpha.Height), System.Drawing.Imaging.PixelFormat.Format32bppArgb); //Post 8bpp conversion for editing since indexed is locked
+
+            //Overwrite the alpha values for each pixel with the ones in the original bitmap
+            for(int h = 0; h < bitmap.Height; h++)
+            {
+                for (int w = 0; w < bitmap.Width; w++)
+                {
+                    byte originalAlpha = bitmap.GetPixel(w, h).A;
+                    Color currentColor = convertedWithAlpha.GetPixel(w, h);
+                    convertedWithAlpha.SetPixel(w, h, Color.FromArgb(originalAlpha, currentColor));
+                }
+            }
+
+            this.Bitmap = convertedWithAlpha;
+            UpdateData();
+            //TODO: Make this return some enum as a result code (ie: too many colors, success, etc)
         }
     }
 }
