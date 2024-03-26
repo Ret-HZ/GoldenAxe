@@ -5,6 +5,8 @@ using Microsoft.Win32;
 using System.Windows;
 using System;
 using System.Windows.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System.Threading.Tasks;
 
 namespace Golden_Axe
 {
@@ -105,15 +107,24 @@ namespace Golden_Axe
         }
 
 
-        private void OpenRegfile(CDIVersion version, string path)
+        private async void OpenRegfile(CDIVersion version, string path)
         {
+            var controller = await this.ShowProgressAsync("Opening REGFILE", "Please wait...");
+            controller.SetIndeterminate();
+
+            CDI regfile = await Task.Factory.StartNew(() =>
+            {
+                return CDIReader.ReadCDI(version, path);
+            });
+
             grid_Explorer.Children.Clear();
-            CDI regfile = CDIReader.ReadCDI(version, path);
             explorer = new CDIExplorer.CDIExplorerUC(regfile);
             Grid.SetRow(explorer, 0);
             Grid.SetColumn(explorer, 0);
             grid_Explorer.Children.Add(explorer);
             mi_SaveRegfile.IsEnabled = true;
+
+            await controller.CloseAsync();
         }
 
 
