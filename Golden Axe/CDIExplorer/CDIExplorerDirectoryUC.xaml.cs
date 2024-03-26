@@ -15,6 +15,8 @@ namespace Golden_Axe.CDIExplorer
         string CurrentDirectory;
         string rootDirectoryName = "CDI_ROOT";
 
+        bool IsRootFolderContentSet = false;
+
 
         public CDIExplorerDirectoryUC(CDIExplorerUC parent)
         {
@@ -55,15 +57,22 @@ namespace Golden_Axe.CDIExplorer
 
         public void DisplayDirectory(List<CDIFolder> folders, string directoryName = "")
         {
-            ClearSelections();
-            ClearFooterSelectionInfo();
-            wrappanel_ExplorerContent.Children.Clear();
-            foreach (CDIFolder folder in folders)
+            scrollviewer_ExplorerContentFiles.Visibility = System.Windows.Visibility.Collapsed;
+            scrollviewer_ExplorerContentFolders.Visibility = System.Windows.Visibility.Visible;
+
+            if (!IsRootFolderContentSet)
             {
-                CDIExplorerFolderUC folderIcon = new CDIExplorerFolderUC(this, folder);
-                wrappanel_ExplorerContent.Children.Add(folderIcon);
+                ClearSelections();
+                ClearFooterSelectionInfo();
+                wrappanel_ExplorerContentFolders.Children.Clear();
+                foreach (CDIFolder folder in folders)
+                {
+                    CDIExplorerFolderUC folderIcon = new CDIExplorerFolderUC(this, folder);
+                    wrappanel_ExplorerContentFolders.Children.Add(folderIcon);
+                }
+                scrollviewer_ExplorerContentFolders.ScrollToTop();
+                IsRootFolderContentSet = true;
             }
-            scrollviewer_ExplorerContent.ScrollToTop();
             UpdateFooterElementAmount(folders.Count);
             UpdatePathDisplay(directoryName);
         }
@@ -71,15 +80,18 @@ namespace Golden_Axe.CDIExplorer
 
         public void DisplayDirectory(List<CDIFile> files, string directoryName = "")
         {
+            scrollviewer_ExplorerContentFiles.Visibility = System.Windows.Visibility.Visible;
+            scrollviewer_ExplorerContentFolders.Visibility = System.Windows.Visibility.Collapsed;
+
             ClearSelections();
             ClearFooterSelectionInfo();
-            wrappanel_ExplorerContent.Children.Clear();
+            wrappanel_ExplorerContentFiles.Children.Clear();
             foreach (CDIFile file in files)
             {
                 CDIExplorerFileUC fileIcon = new CDIExplorerFileUC(this, file);
-                wrappanel_ExplorerContent.Children.Add(fileIcon);
+                wrappanel_ExplorerContentFiles.Children.Add(fileIcon);
             }
-            scrollviewer_ExplorerContent.ScrollToTop();
+            scrollviewer_ExplorerContentFiles.ScrollToTop();
             UpdateFooterElementAmount(files.Count);
             UpdatePathDisplay(directoryName);
         }

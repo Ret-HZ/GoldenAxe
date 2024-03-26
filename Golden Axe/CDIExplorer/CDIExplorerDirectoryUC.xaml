@@ -30,9 +30,11 @@
             <TextBox x:Name="txt_NavPath" Grid.Column="2" Margin="10,5,10,5" IsReadOnly="True"/>
         </Grid>
 
-        <ScrollViewer x:Name="scrollviewer_ExplorerContent" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
-            <WrapPanel Name="wrappanel_ExplorerContent">
-            </WrapPanel>
+        <ScrollViewer x:Name="scrollviewer_ExplorerContentFolders" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <WrapPanel Name="wrappanel_ExplorerContentFolders"/>
+        </ScrollViewer>
+        <ScrollViewer x:Name="scrollviewer_ExplorerContentFiles" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <WrapPanel Name="wrappanel_ExplorerContentFiles"/>
         </ScrollViewer>
 
         <Grid Name="grid_Footer" Grid.Row="2">
