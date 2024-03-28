@@ -80,7 +80,7 @@ namespace AceUtils.PDW
                 byte b = pdw.PaletteData[pixel*4+2];
                 byte a = pdw.PaletteData[pixel*4+3];
 
-                int x = i % pdw.Height;
+                int x = i % pdw.Width;
                 int y = i / pdw.Width;
 
                 pdw.Bitmap.SetPixel(x, y, Color.FromArgb(a, r, g, b));
