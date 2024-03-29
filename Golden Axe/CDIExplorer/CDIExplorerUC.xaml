@@ -30,13 +30,23 @@
                 <TreeView x:Name="treeview_Directory" Grid.Row="1">
                     <TreeView.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type local:CDIFolderItemTreeView}" ItemsSource="{Binding Files}">
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Background="Transparent" ContextMenuOpening="StackPanel_ContextMenuOpening">
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="mi_tv_FolderOpen" Header="Open folder" Click="mi_tv_FolderOpen_Click"/>
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
                                 <Image Source="/Resources/Icons/Folder.png" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,5,0" Width="16" Height="16"/>
                                 <TextBlock Text="{Binding Name}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                         <DataTemplate DataType="{x:Type local:CDIFileItemTreeView}">
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Background="Transparent" ContextMenuOpening="StackPanel_ContextMenuOpening">
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="mi_tv_FileOpen" Header="Open file" Click="mi_tv_FileOpen_Click"/>
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
                                 <Image Source="/Resources/Icons/File.png" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,5,0" Width="16" Height="16"/>
                                 <TextBlock Text="{Binding Name}" />
                             </StackPanel>
