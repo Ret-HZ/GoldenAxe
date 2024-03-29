@@ -1,6 +1,5 @@
 ﻿using AceUtils.CDI;
 using AceUtils.PDW;
-using Golden_Axe.PDWEditor;
 using System;
 using System.Windows;
 using System.Windows.Controls;
