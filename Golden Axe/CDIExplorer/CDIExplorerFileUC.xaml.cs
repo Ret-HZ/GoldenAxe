@@ -55,37 +55,17 @@ namespace Golden_Axe.CDIExplorer
         }
 
 
-        private void OpenFileEditor()
-        {
-            switch (File.GetExtension())
-            {
-                case "PDW":
-                    {
-                        PDWEditorWindow pdwEditor = new PDWEditorWindow(File);
-                        pdwEditor.Show();
-                        break;
-                    }
-                default:
-                    {
-                        MessageBox.Show($"No editor available for this format.", "No editor", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        break;
-                    }
-
-            }
-        }
-
-
         private void Grid_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (IsSelected)
             {
                 try
                 {
-                    OpenFileEditor();
+                    FileEditorHandler.OpenFileEditor(File);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"An error has occurred when attempting to open the file.\n\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Util.ShowMessageBox($"An error has occurred when attempting to open the file.\n\n{ex.Message}", "Error");
                 }
             }
             else

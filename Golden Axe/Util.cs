@@ -1,7 +1,12 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.Controls;
+using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using System.Windows;
+using System.Linq;
 
 namespace Golden_Axe
 {
@@ -46,6 +51,13 @@ namespace Golden_Axe
 
                 return bitmapimage;
             }
+        }
+
+
+        public static Task<MessageDialogResult> ShowMessageBox(string message, string title = "", MessageDialogStyle style = MessageDialogStyle.Affirmative, MetroDialogSettings settings = null)
+        {
+            var firstMetroWindow = Application.Current.Windows.OfType<MetroWindow>().First();
+            return firstMetroWindow.ShowMessageAsync(title, message, style, settings);
         }
     }
 }
