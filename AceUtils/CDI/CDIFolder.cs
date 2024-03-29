@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AceUtils.CDI
 {
@@ -31,12 +32,34 @@ namespace AceUtils.CDI
 
 
 
+        /// <summary>
+        /// Gets all files inside the folder.
+        /// </summary>
+        /// <returns>A <see cref="CDIFile"/> list.</returns>
         public List<CDIFile> GetFiles()
         {
             List<CDIFile> returnList = new List<CDIFile>();
             foreach (KeyValuePair<string, CDIFile> kvp in Files)
             {
                 returnList.Add(kvp.Value);
+            }
+
+            return returnList;
+        }
+
+
+        /// <summary>
+        /// Gets files whose names contain the given substring.
+        /// </summary>
+        /// <param name="searchStr">The substring to look for.</param>
+        /// <returns>A <see cref="CDIFile"/> list.</returns>
+        public List<CDIFile> SearchFilesByName(string searchStr)
+        {
+            List<CDIFile> returnList = new List<CDIFile>();
+            foreach (KeyValuePair<string, CDIFile> kvp in Files)
+            {
+                if (kvp.Value.Name.IndexOf(searchStr, StringComparison.OrdinalIgnoreCase) >= 0)
+                    returnList.Add(kvp.Value);
             }
 
             return returnList;

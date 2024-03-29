@@ -83,6 +83,7 @@ namespace AceUtils.CDI
                         }
 
                         folder.Files.Add(file.Name, file);
+                        regfile.PathCache.Add($"{folder.Name}/{file.Name}");
                     }
 
                     reader.Stream.PopPosition();
