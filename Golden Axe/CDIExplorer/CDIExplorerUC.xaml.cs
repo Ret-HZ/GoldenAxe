@@ -23,23 +23,23 @@ namespace Golden_Axe.CDIExplorer
         {
             InitializeComponent();
             REGFILE = regfile;
-            InitDirectoryTreeview();
+            InitDirectoryTreeview(REGFILE.GetFolders());
             InitDirectoryExplorer();
         }
 
 
-        private void InitDirectoryTreeview()
+        private void InitDirectoryTreeview(List<CDIFolder> CDIFolders, string searchStr = "")
         {
             List<CDIFolderItemTreeView> folders = new List<CDIFolderItemTreeView>();
 
-            foreach (CDIFolder folder in REGFILE.GetFolders())
+            foreach (CDIFolder folder in CDIFolders)
             {
                 CDIFolderItemTreeView tvfolder = new CDIFolderItemTreeView()
                 {
                     Name = folder.Name,
                     Folder = folder,
                 };
-                foreach(CDIFile file in folder.GetFiles())
+                foreach(CDIFile file in folder.SearchFilesByName(searchStr))
                 {
                     CDIFileItemTreeView tvfile = new CDIFileItemTreeView()
                     {
@@ -134,6 +134,13 @@ namespace Golden_Axe.CDIExplorer
                 current = VisualTreeHelper.GetParent(current);
             } while (current != null);
             return null;
+        }
+
+
+        private void txt_Searchbox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            List<CDIFolder> results = REGFILE.SearchFoldersByNameAndContentName(txt_Searchbox.Text);
+            InitDirectoryTreeview(results, txt_Searchbox.Text);
         }
     }
 
