@@ -130,7 +130,13 @@ namespace Golden_Axe
 
         private void SaveRegfile(string path)
         {
-            CDIWriter.WriteCDIToFile(explorer.REGFILE, path);
+            try
+            {
+                CDIWriter.WriteCDIToFile(explorer.REGFILE, path);
+            } catch (System.IO.IOException ioexception)
+            {
+                Util.ShowMessageBox($"{ioexception.Message}", "Error");
+            }
         }
 
 
