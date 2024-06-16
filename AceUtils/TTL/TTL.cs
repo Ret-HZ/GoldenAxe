@@ -7,6 +7,7 @@ namespace AceUtils.TTL
         public TTL()
         {
             CharacterTable = new Dictionary<uint, char>();
+            CharacterTableReverse = new Dictionary<char, uint>();
             IdList = new List<uint>();
         }
 
@@ -20,6 +21,8 @@ namespace AceUtils.TTL
         public Version version { get; set; }
 
         public Dictionary<uint, char> CharacterTable { get; set; }
+
+        public Dictionary<char, uint> CharacterTableReverse { get; set; }
 
         public List<uint> IdList { get; set; }
 

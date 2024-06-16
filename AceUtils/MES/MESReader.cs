@@ -20,10 +20,19 @@ namespace AceUtils.MES
             MES mes = new MES();
 
             int magic = reader.ReadInt32();
-            reader.Stream.Seek(0x9EAE); //debug
-            string strr = ReadString(reader, ttl); //debug
-            System.Diagnostics.Debug.WriteLine(strr);
+            int headerUnknown0x4 = reader.ReadInt32(); //Version?
+            int stringTableLength = reader.ReadInt32(); //Usually 8600
 
+            for (uint i = 0; i < stringTableLength; i++)
+            {
+                int ptrString = reader.ReadInt32();
+                if (ptrString == 0) continue;
+                reader.Stream.PushToPosition(ptrString);
+                Message msg = ReadMessage(reader, ttl);
+                reader.Stream.PopPosition();
+                System.Diagnostics.Trace.WriteLine($"[{i}] - {msg.Text}"); //debug
+                mes.Messages.Add(i, msg);
+            }
 
             return mes;
         }
@@ -74,27 +83,81 @@ namespace AceUtils.MES
         }
 
 
-        private static string ReadString(DataReader reader, TTL.TTL ttl)
+        private static Message ReadMessage(DataReader reader, TTL.TTL ttl)
         {
-            string output = "";
+            Message msg = new Message();
 
-            while (true)
+            msg.SpeakerID = reader.ReadUInt16();
+            ushort lineCount = reader.ReadUInt16();
+            msg.Unk0x4 = reader.ReadUInt16();
+            msg.Duration = reader.ReadUInt16();
+
+
+            string text = "";
+
+            for (int i = 0; i < lineCount; i++)
             {
-                uint character = reader.ReadUInt16();
-                if (character == 65535) break;
-                if (character == 65534)
+                ushort characterCount = reader.ReadUInt16();
+                while(true)
                 {
-                    output += "\n";
-                    continue;
-                }
-                else
-                {
-                    char chara = ttl.CharacterTable[ttl.IdList[(int)character]];
-                    output += chara;
+                    uint character = reader.ReadUInt16();
+
+                    switch (character)
+                    {
+                        //Check control characters
+
+                        //End
+                        case 65535: break;
+
+                        //New line
+                        case 65534:
+                            {
+                                text += "\n";
+                                break;
+                            }
+
+                        //Text color. Followed by RGB values
+                        case 65530:
+                            {
+                                byte r = (byte)reader.ReadUInt16();
+                                byte g = (byte)reader.ReadUInt16();
+                                byte b = (byte)reader.ReadUInt16();
+                                text += $"<color_{r.ToString("X2")}{g.ToString("X2")}{b.ToString("X2")}>";
+                                continue;
+                            }
+
+                        //Symbols. Used to display PS buttons. Followed by the ID of the symbol itself
+                        case 65524:
+                            {
+                                uint psButtonID = reader.ReadUInt16();
+                                text += $"<symbol_{psButtonID}>";
+                                continue;
+                            }
+
+                        //Delay. Used to introduce wait time between lines. The next line wont appear until the current message duration is over.
+                        //The line will use the duration established by this special character. Speaker ID and other attributes will be the same as the message.
+                        case 65522:
+                            {
+                                ushort duration = reader.ReadUInt16();
+                                ushort unk2 = reader.ReadUInt16();
+                                text += $"<delay_{duration},{unk2}>";
+                                continue;
+                            }
+
+                        default:
+                            {
+                                char chara = ttl.CharacterTable[ttl.IdList[(int)character]];
+                                text += chara;
+                                continue;
+                            }
+                    }
+
+                    break;
                 }
             }
 
-            return output;
+            msg.Text = text;
+            return msg;
         }
     }
 }

@@ -43,6 +43,7 @@ namespace AceUtils.TTL
                 if (!ttl.CharacterTable.ContainsKey(characterNumeric))
                 {
                     ttl.CharacterTable.Add(characterNumeric, character);
+                    ttl.CharacterTableReverse.Add(character, characterNumeric);
                 }
                 ttl.IdList.Add(characterNumeric);
             }
