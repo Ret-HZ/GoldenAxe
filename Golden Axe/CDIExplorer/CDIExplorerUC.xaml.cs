@@ -1,6 +1,8 @@
 ﻿using AceUtils.CDI;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -79,6 +81,44 @@ namespace Golden_Axe.CDIExplorer
         }
 
 
+        private void mi_tv_FolderExtract_Click(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem treeViewItem = GetTreeViewItemFromMenuItem(sender);
+
+            if (treeViewItem != null)
+            {
+                CDIFolderItemTreeView folderItem = treeViewItem.Header as CDIFolderItemTreeView;
+                if (folderItem != null && explorer != null)
+                {
+                    List<CDIFile> files = folderItem.Folder.GetFiles();
+                    if (files.Count > 0)
+                    {
+                        var folderDialog = new OpenFolderDialog
+                        {
+                            Title = "Select a destination directory for the contents",
+                        };
+
+                        if (folderDialog.ShowDialog() == true)
+                        {
+                            string outPath = Path.Combine(folderDialog.FolderName, folderItem.Folder.Name);
+                            Directory.CreateDirectory(outPath);
+                            foreach (CDIFile file in files)
+                            {
+                                string fileOutPath = Path.Combine(outPath, file.Name);
+                                File.WriteAllBytes(fileOutPath, file.GetContent());
+                            }
+                            Util.ShowMessageBox($"{files.Count} files extracted.", "Success");
+                        }
+                    }
+                    else
+                    {
+                        Util.ShowMessageBox($"No files inside the {folderItem.Name} folder.", "Error");
+                    }
+                }
+            }
+        }
+
+
         private void mi_tv_FileOpen_Click(object sender, RoutedEventArgs e)
         {
             TreeViewItem treeViewItem = GetTreeViewItemFromMenuItem(sender);
@@ -89,6 +129,33 @@ namespace Golden_Axe.CDIExplorer
                 if (fileItem != null)
                 {
                     FileEditorHandler.OpenFileEditor(fileItem.File);
+                }
+            }
+        }
+
+
+        private void mi_tv_FileExtract_Click(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem treeViewItem = GetTreeViewItemFromMenuItem(sender);
+
+            if (treeViewItem != null)
+            {
+                CDIFileItemTreeView fileItem = treeViewItem.Header as CDIFileItemTreeView;
+                if (fileItem != null)
+                {
+                    CDIFile file = fileItem.File;
+                    string extension = file.GetExtension();
+                    SaveFileDialog dialog = new SaveFileDialog()
+                    {
+                        FileName = file.GetNameWithoutExtension(),
+                        DefaultExt = file.GetExtension(),
+                        Filter = $"{extension} (*.{extension})|*.{extension}|All types (*.*)|*.*",
+                    };
+
+                    if (dialog.ShowDialog() == true)
+                    {
+                        File.WriteAllBytes(dialog.FileName, fileItem.File.GetContent());
+                    }
                 }
             }
         }
