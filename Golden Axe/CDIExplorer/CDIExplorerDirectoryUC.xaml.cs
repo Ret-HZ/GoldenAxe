@@ -132,6 +132,13 @@ namespace Golden_Axe.CDIExplorer
         }
 
 
+        public void ClearCurrentSelection()
+        {
+            ClearSelections();
+            ClearFooterSelectionInfo();
+        }
+
+
         private void btn_NavDirectoryBack_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             DisplayDirectory(Parent.REGFILE.GetFolders());

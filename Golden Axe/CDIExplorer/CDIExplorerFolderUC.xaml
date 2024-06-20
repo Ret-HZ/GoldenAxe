@@ -7,12 +7,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100">
 
-    <Grid Margin="0,0,0,20" Height="100" Width="100" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+    <Grid Margin="0,0,0,20" Height="100" Width="100" MouseLeftButtonDown="Grid_MouseLeftButtonDown" ContextMenuOpening="Grid_ContextMenuOpening" ContextMenuClosing="Grid_ContextMenuClosing">
         <Grid.RowDefinitions>
             <RowDefinition Height=".70*"/>
             <RowDefinition Height=".30*"/>
         </Grid.RowDefinitions>
 
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem x:Name="mi_grid_FolderOpen" Header="Open folder" Click="mi_grid_FolderOpen_Click"/>
+                <MenuItem x:Name="mi_grid_FolderExtract" Header="Extract contents" Click="mi_grid_FolderExtract_Click"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
+        
         <Image Grid.Row="0" Source="/Resources/Icons/Folder.png" RenderOptions.BitmapScalingMode="NearestNeighbor" Width="60" Height="60" HorizontalAlignment="Center"/>
         <Rectangle x:Name="rectangle_SelectionImage" Stretch="Fill" Fill="Transparent" Opacity="0.1"/>
         <Label Grid.Row="1" HorizontalContentAlignment="Center">
