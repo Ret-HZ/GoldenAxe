@@ -161,6 +161,15 @@ namespace Golden_Axe.CDIExplorer
         }
 
 
+        private void txt_Searchbox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter) return;
+            System.Windows.Input.Keyboard.ClearFocus();
+            List<CDIFolder> results = REGFILE.SearchFoldersByNameAndContentName(txt_Searchbox.Text);
+            InitDirectoryTreeview(results, txt_Searchbox.Text);
+        }
+
+
         private void StackPanel_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             TreeViewItem treeViewItem = GetTreeViewItemFromStackPanel(sender);
@@ -201,13 +210,6 @@ namespace Golden_Axe.CDIExplorer
                 current = VisualTreeHelper.GetParent(current);
             } while (current != null);
             return null;
-        }
-
-
-        private void txt_Searchbox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            List<CDIFolder> results = REGFILE.SearchFoldersByNameAndContentName(txt_Searchbox.Text);
-            InitDirectoryTreeview(results, txt_Searchbox.Text);
         }
     }
 
