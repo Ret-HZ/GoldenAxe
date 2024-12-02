@@ -130,15 +130,25 @@ namespace Golden_Axe
         }
 
 
-        private void SaveRegfile(string path)
+        private async void SaveRegfile(string path)
         {
-            try
+            var controller = await this.ShowProgressAsync("Saving REGFILE", "Please wait...");
+            controller.SetIndeterminate();
+            await Task.Run(() =>
             {
-                CDIWriter.WriteCDIToFile(explorer.REGFILE, path);
-            } catch (IOException ioexception)
-            {
-                Util.ShowMessageBox($"{ioexception.Message}", "Error");
-            }
+                try
+                {
+                    CDIWriter.WriteCDIToFile(explorer.REGFILE, path);
+                }
+                catch (Exception ex)
+                {
+                    this.Dispatcher.Invoke(() => {
+                        Util.ShowMessageBox($"An error has occurred while saving.\nException: {ex.Message}", "Error");
+                    });
+                }
+            });
+
+            await controller.CloseAsync();
         }
 
 
