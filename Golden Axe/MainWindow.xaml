@@ -25,6 +25,9 @@
                 </MenuItem>
                 <MenuItem x:Name="mi_SaveRegfile" Header="Save REGFILE" Click="mi_SaveRegfile_Click" IsEnabled="False"/>
             </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem x:Name="mi_Tools_ExtractAll" Header="Extract all" Click="mi_Tools_ExtractAll_Click" IsEnabled="False"/>
+            </MenuItem>
         </Menu>
 
         <Grid x:Name="grid_Explorer" Grid.Row="1" Grid.Column="0">

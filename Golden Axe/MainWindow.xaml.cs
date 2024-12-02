@@ -3,6 +3,7 @@ using AceUtils.CDI.Enum;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using System.Windows;
+using System.IO;
 using System;
 using System.Windows.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -123,6 +124,7 @@ namespace Golden_Axe
             Grid.SetColumn(explorer, 0);
             grid_Explorer.Children.Add(explorer);
             mi_SaveRegfile.IsEnabled = true;
+            mi_Tools_ExtractAll.IsEnabled = true;
 
             await controller.CloseAsync();
         }
@@ -133,7 +135,7 @@ namespace Golden_Axe
             try
             {
                 CDIWriter.WriteCDIToFile(explorer.REGFILE, path);
-            } catch (System.IO.IOException ioexception)
+            } catch (IOException ioexception)
             {
                 Util.ShowMessageBox($"{ioexception.Message}", "Error");
             }
@@ -151,6 +153,58 @@ namespace Golden_Axe
             if (result == true)
             {
                 SaveRegfile(dlg.FileName);
+            }
+        }
+
+
+        private async void mi_Tools_ExtractAll_Click(object sender, RoutedEventArgs e)
+        {
+            var openFolderDialog = new OpenFolderDialog
+            {
+                Title = "Choose where to extract the contents",
+            };
+
+            if (openFolderDialog.ShowDialog() == true)
+            {
+                var controller = await this.ShowProgressAsync("Extracting REGFILE contents...", "", true);
+                await Task.Run(() => {
+                    try
+                    {
+                        int totalFiles = 0;
+                        foreach (var folder in explorer.REGFILE.GetFolders())
+                        {
+                            totalFiles += folder.Files.Count;
+                        }
+                        controller.Minimum = 1;
+                        controller.Maximum = totalFiles;
+
+                        int progress = 1;
+                        foreach (var folder in explorer.REGFILE.GetFolders())
+                        {
+                            Directory.CreateDirectory(Path.Combine(openFolderDialog.FolderName, folder.Name));
+                            var files = folder.GetFiles();
+                            foreach (var file in files)
+                            {
+                                if (controller.IsCanceled) return;
+                                string filePath = Path.Combine(folder.Name, file.Name);
+                                controller.SetMessage(filePath);
+                                controller.SetProgress(progress++);
+                                if (!file.IsDummy)
+                                {
+                                    File.WriteAllBytes(Path.Combine(openFolderDialog.FolderName, filePath), file.GetContent());
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Dispatcher.Invoke(() => {
+                            Util.ShowMessageBox($"An error has occurred during extraction.\nException: {ex.Message}", "Error");
+                        });
+                    }
+                });
+
+                await controller.CloseAsync();
             }
         }
     }
