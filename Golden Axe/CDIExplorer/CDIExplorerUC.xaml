@@ -27,7 +27,7 @@
 
                 <TextBox Grid.Row="0" x:Name="txt_Searchbox" mah:TextBoxHelper.Watermark="Search" Height="24" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,10" KeyUp="txt_Searchbox_KeyUp"/>
                 
-                <TreeView x:Name="treeview_Directory" Grid.Row="1">
+                <TreeView x:Name="treeview_Directory" Grid.Row="1" VirtualizingPanel.IsVirtualizing="True">
                     <TreeView.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type local:CDIFolderItemTreeView}" ItemsSource="{Binding Files}">
                             <StackPanel Orientation="Horizontal" Background="Transparent" ContextMenuOpening="StackPanel_ContextMenuOpening">
