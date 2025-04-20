@@ -1,6 +1,9 @@
 ﻿using AceUtils.PDW.Enum;
+using ImageMagick;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace AceUtils.PDW
 {
@@ -130,23 +133,36 @@ namespace AceUtils.PDW
                 return;
             }
 
-            //Convert the bitmap to 8bpp
-            Bitmap copy = new Bitmap(bitmap); //Copy to fix Clone()
-            Bitmap converted8bppNoAlpha = copy.Clone(new Rectangle(0, 0, copy.Width, copy.Height), System.Drawing.Imaging.PixelFormat.Format8bppIndexed); //Converted palette to 8bpp but alpha is lost
-            Bitmap convertedWithAlpha = converted8bppNoAlpha.Clone(new Rectangle(0, 0, converted8bppNoAlpha.Width, converted8bppNoAlpha.Height), System.Drawing.Imaging.PixelFormat.Format32bppArgb); //Post 8bpp conversion for editing since indexed is locked
-
-            //Overwrite the alpha values for each pixel with the ones in the original bitmap
-            for (int h = 0; h < bitmap.Height; h++)
+            // Quantize the image to 256 colors
+            using (var ms = new MemoryStream())
             {
-                for (int w = 0; w < bitmap.Width; w++)
+                bitmap.Save(ms, ImageFormat.Png);
+                ms.Position = 0;
+
+                using (var image = new MagickImage(ms))
                 {
-                    byte originalAlpha = bitmap.GetPixel(w, h).A;
-                    Color currentColor = convertedWithAlpha.GetPixel(w, h);
-                    convertedWithAlpha.SetPixel(w, h, Color.FromArgb(originalAlpha, currentColor));
+                    image.ColorType = ColorType.TrueColorAlpha;
+
+                    var settings = new QuantizeSettings()
+                    {
+                        Colors = 256,
+                        DitherMethod = DitherMethod.FloydSteinberg,
+                        ColorSpace = ColorSpace.RGB,
+                    };
+                    image.Quantize(settings);
+                    image.ColorType = ColorType.PaletteAlpha;
+
+                    using (var outStream = new MemoryStream())
+                    {
+                        image.Format = MagickFormat.Png;
+                        image.Write(outStream);
+                        outStream.Position = 0;
+
+                        this.Bitmap = new Bitmap(outStream);
+                    }
                 }
             }
 
-            this.Bitmap = convertedWithAlpha;
             UpdateData();
             //TODO: Make this return some enum as a result code (ie: too many colors, success, etc)
         }
