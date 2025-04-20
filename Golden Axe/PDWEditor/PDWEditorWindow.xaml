@@ -16,8 +16,18 @@
         
         <Image Grid.Row="0" x:Name="img_Image" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
         <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20">
+            <Label x:Name="lbl_TextureAmount" Foreground="DarkOrange" Content="Textures: 0"/>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Button x:Name="btn_TextureBack" Content="&lt;" Click="btn_TextureBack_Click"/>
+                <Label x:Name="lbl_TextureIndex" Content="0" Foreground="DarkOrange"/>
+                <Button x:Name="btn_TextureForward" Content="&gt;" Click="btn_TextureForward_Click"/>
+            </StackPanel>
+            <Separator Height="20px" Background="Transparent"/>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox x:Name="checkbox_AlphaPreviewEnabled" Margin="5" IsChecked="True" IsThreeState="False" Click="checkbox_AlphaPreviewEnabled_Click"/>
+                <Label x:Name="lbl_AlphaPreviewEnabled" Foreground="DarkOrange" Content="Alpha"/>
+            </StackPanel>
             <Label x:Name="lbl_Dimensions" Foreground="DarkOrange" Content="Dimensions"/>
-            <Label x:Name="lbl_TextureAmount" Foreground="DarkOrange" Content="Texture Amount"/>
             <Label x:Name="lbl_Flags" Foreground="DarkOrange" Content="Flags"/>
         </StackPanel>
 

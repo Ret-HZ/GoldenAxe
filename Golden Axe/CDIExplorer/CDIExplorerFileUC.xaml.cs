@@ -32,7 +32,7 @@ namespace Golden_Axe.CDIExplorer
             {
                 if (File.GetExtension() == "PDW")
                 {
-                    img_Thumbnail.Source = Util.BitmapToImageSource(PDWReader.ReadPDW(File.GetContent()).GetBitmap());
+                    img_Thumbnail.Source = Util.BitmapToImageSource(PDWReader.ReadPDW(File.GetContent()).Textures[0].GetBitmap());
                 }
             }
         }
