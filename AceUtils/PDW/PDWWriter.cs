@@ -26,58 +26,28 @@ namespace AceUtils.PDW
             writer.Write(0); //Placeholder filesize
             writer.Write(pdw.TextureAmount);
             writer.Write(0);
-            int ptrTexturePointerTable = (int)writer.Stream.Position;
-            writer.WriteTimes(0x00, 0x30); //Placeholder texture pointer table
+            int ptrTextureOffsetTable = (int)writer.Stream.Position;
+            writer.WriteTimes(0x00, 0x30); //Placeholder texture offset table
 
-            //TODO: support multiple textures
-
-            //Texture data
-            int ptrTexture = (int)writer.Stream.Position;
-            writer.Write(pdw.Height * pdw.Width);
-            writer.Write(pdw.Width);
-            writer.Write(pdw.Height);
-            //writer.Write((byte)pdw.PixelFormat);
-            writer.Write((byte)PDWPixelFormat.RGBA8bpp); //4bpp not supported yet, always write as 8bpp
-            writer.Write(pdw.Flag_0x09);
-            writer.Write(pdw.Unk_0x0A);
-            writer.Write(pdw.Unk_0x0C);
-
-            //Pixel data
-            //TODO: 4bpp support
-            List<Color> colors = new List<Color>();
-            byte[] pixelsUnswizzled = new byte[pdw.Width * pdw.Height];
-            int pixelIndex = 0;
-            for (int h = 0; h < pdw.Height; h++)
+            // Texture data
+            List<int> textureOffsets = new List<int>();
+            foreach (PDWTexture texture in pdw.Textures)
             {
-                for (int w = 0; w < pdw.Width; w++)
-                {
-                    Color col = pdw.Bitmap.GetPixel(w, h);
-                    if (!colors.Contains(col)) colors.Add(col);
-                    pixelsUnswizzled[pixelIndex] = (byte)colors.IndexOf(col);
-                    pixelIndex++;
-                }
-            }
-            writer.Write(Swizzle(pixelsUnswizzled, pdw.Width, pdw.Height, 8));
-
-            //Palette
-            foreach (Color col in colors)
-            {
-                writer.Write(col.R);
-                writer.Write(col.G);
-                writer.Write(col.B);
-                writer.Write(col.A);
-            }
-            //Fill remaining color slots
-            for (int i = colors.Count; i < 256; i++)
-            {
-                writer.Write(0); //R0 G0 B0 A0
+                textureOffsets.Add((int)writer.Stream.Position);
+                WriteTexture(writer, texture);
             }
 
+            // Update header
             int fileSize = (int)writer.Stream.Position;
             writer.Stream.Seek(0x4);
             writer.Write(fileSize);
-            writer.Stream.Seek(ptrTexturePointerTable);
-            writer.Write(ptrTexture);
+
+            // Texture offset table
+            writer.Stream.Seek(ptrTextureOffsetTable);
+            foreach (int offset in textureOffsets)
+            {
+                writer.Write(offset);
+            }
         }
 
 
@@ -118,6 +88,55 @@ namespace AceUtils.PDW
             DataStream tempds = DataStreamFactory.FromMemory();
             WritePDW(pdw, tempds);
             return tempds.ToArray();
+        }
+
+
+        /// <summary>
+        /// Writes a <see cref="PDWTexture"/> to the <see cref="DataStream"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="DataWriter"/>.</param>
+        /// <param name="texture">The <see cref="PDWTexture"/> to write.</param>
+        private static void WriteTexture(DataWriter writer, PDWTexture texture)
+        {
+            writer.Write(texture.Height * texture.Width); //This should be halved when writing 4bpp
+            writer.Write(texture.Width);
+            writer.Write(texture.Height);
+            //writer.Write((byte)pdw.PixelFormat);
+            writer.Write((byte)PDWPixelFormat.RGBA8bpp); //4bpp not supported yet, always write as 8bpp
+            writer.Write(texture.Flag_0x09);
+            writer.Write(texture.Unk_0x0A);
+            writer.Write(texture.Unk_0x0C);
+
+            //Pixel data
+            //TODO: 4bpp support
+            List<Color> colors = new List<Color>();
+            byte[] pixelsUnswizzled = new byte[texture.Width * texture.Height];
+            int pixelIndex = 0;
+            for (int h = 0; h < texture.Height; h++)
+            {
+                for (int w = 0; w < texture.Width; w++)
+                {
+                    Color col = texture.Bitmap.GetPixel(w, h);
+                    if (!colors.Contains(col)) colors.Add(col);
+                    pixelsUnswizzled[pixelIndex] = (byte)colors.IndexOf(col);
+                    pixelIndex++;
+                }
+            }
+            writer.Write(Swizzle(pixelsUnswizzled, texture.Width, texture.Height, 8));
+
+            //Palette
+            foreach (Color col in colors)
+            {
+                writer.Write(col.R);
+                writer.Write(col.G);
+                writer.Write(col.B);
+                writer.Write(col.A);
+            }
+            //Fill remaining color slots
+            for (int i = colors.Count; i < 256; i++)
+            {
+                writer.Write(0); //R0 G0 B0 A0
+            }
         }
 
 

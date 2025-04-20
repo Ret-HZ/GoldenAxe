@@ -1,5 +1,6 @@
 ﻿using AceUtils.PDW.Enum;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -21,69 +22,28 @@ namespace AceUtils.PDW
                 Endianness = EndiannessMode.LittleEndian,
             };
 
-            PDW pdw = new PDW();
-
             string magic = reader.ReadString(4);
             if (magic != "PDW.")
                 throw new Exception("Invalid magic. Expected PDW.");
 
+            PDW pdw = new PDW();
+
             int fileSize = reader.ReadInt32();
-            pdw.TextureAmount = reader.ReadInt32();
-            reader.ReadInt32();
-            int ptrInfoTable = reader.ReadInt32();
-            reader.Stream.Seek(ptrInfoTable);
+            int textureCount = reader.ReadInt32();
+            reader.ReadInt32(); // Padding
 
-            pdw.PixelDataLength = reader.ReadInt32(); //this may not be correct (?) //ACX - FLY04/FLY04D0.PDW
-
-            pdw.Width = reader.ReadUInt16();
-            pdw.Height = reader.ReadUInt16();
-
-            pdw.PixelFormat = (PDWPixelFormat)reader.ReadByte();
-            pdw.Flag_0x09 = reader.ReadByte();
-            pdw.Unk_0x0A = reader.ReadUInt16();
-            pdw.Unk_0x0C = reader.ReadInt32();
-
-            if (pdw.PixelFormat == PDWPixelFormat.RGBA8bpp)
+            // Texture offset table
+            List<int> textureOffsets = new List<int>();
+            for (int i = 0; i < textureCount; i++)
             {
-                byte[] swizzledTextureData = reader.ReadBytes(pdw.Width * pdw.Height);
-                pdw.PixelData = Unswizzle(swizzledTextureData, pdw.Width, pdw.Height, 8);
-                pdw.PaletteData = reader.ReadBytes(0x400);
-            }
-            else if (pdw.PixelFormat == PDWPixelFormat.RGBA4bpp)
-            {
-                byte[] swizzledTextureData = reader.ReadBytes((pdw.Width * pdw.Height) / 2);
-                byte[] unswizzledTextureData = Unswizzle(swizzledTextureData, pdw.Width, pdw.Height, 4);
-                pdw.PixelData = new byte[pdw.Width * pdw.Height];
-                for ( int i = 0; i < unswizzledTextureData.Length; i++)
-                {
-                    byte b = unswizzledTextureData[i];
-                    byte firstPixel = (byte)(b & 0x0F);
-                    byte secondPixel = (byte)(b >> 4);
-
-                    pdw.PixelData[i*2] = firstPixel;
-                    pdw.PixelData[i*2+1] = secondPixel;
-                }
-                pdw.PaletteData = reader.ReadBytes(0x40);
-            }
-            else
-            {
-                throw new Exception($"Unknown PDW pixel format '{pdw.PixelFormat}'.");
+                textureOffsets.Add(reader.ReadInt32());
             }
 
-            pdw.Bitmap = new Bitmap(pdw.Width, pdw.Height, PixelFormat.Format32bppArgb);
-
-            for (int i = 0; i < pdw.PixelData.Length; i++)
+            // Read textures
+            foreach (int offset in textureOffsets)
             {
-                byte pixel = pdw.PixelData[i];
-                byte r = pdw.PaletteData[pixel*4+0];
-                byte g = pdw.PaletteData[pixel*4+1];
-                byte b = pdw.PaletteData[pixel*4+2];
-                byte a = pdw.PaletteData[pixel*4+3];
-
-                int x = i % pdw.Width;
-                int y = i / pdw.Width;
-
-                pdw.Bitmap.SetPixel(x, y, Color.FromArgb(a, r, g, b));
+                reader.Stream.Seek(offset);
+                pdw.Textures.Add(ReadTexture(reader));
             }
 
             return pdw;
@@ -132,6 +92,73 @@ namespace AceUtils.PDW
             {
                 return ReadPDW(datastream);
             }
+        }
+
+
+        /// <summary>
+        /// Reads a <see cref="PDWTexture"/> from the <see cref="DataStream"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="DataReader"/>.</param>
+        /// <returns>A <see cref="PDWTexture"/>.</returns>
+        /// <exception cref="Exception">The pixel format version is not implemented.</exception>
+        private static PDWTexture ReadTexture(DataReader reader)
+        {
+            PDWTexture texture = new PDWTexture();
+
+            texture.PixelDataLength = reader.ReadInt32();
+
+            texture.Width = reader.ReadUInt16();
+            texture.Height = reader.ReadUInt16();
+
+            texture.PixelFormat = (PDWPixelFormat)reader.ReadByte();
+            texture.Flag_0x09 = reader.ReadByte();
+            texture.Unk_0x0A = reader.ReadUInt16();
+            texture.Unk_0x0C = reader.ReadInt32();
+
+            if (texture.PixelFormat == PDWPixelFormat.RGBA8bpp)
+            {
+                byte[] swizzledTextureData = reader.ReadBytes(texture.Width * texture.Height);
+                texture.PixelData = Unswizzle(swizzledTextureData, texture.Width, texture.Height, 8);
+                texture.PaletteData = reader.ReadBytes(0x400);
+            }
+            else if (texture.PixelFormat == PDWPixelFormat.RGBA4bpp)
+            {
+                byte[] swizzledTextureData = reader.ReadBytes((texture.Width * texture.Height) / 2);
+                byte[] unswizzledTextureData = Unswizzle(swizzledTextureData, texture.Width, texture.Height, 4);
+                texture.PixelData = new byte[texture.Width * texture.Height];
+                for (int i = 0; i < unswizzledTextureData.Length; i++)
+                {
+                    byte b = unswizzledTextureData[i];
+                    byte firstPixel = (byte)(b & 0x0F);
+                    byte secondPixel = (byte)(b >> 4);
+
+                    texture.PixelData[i * 2] = firstPixel;
+                    texture.PixelData[i * 2 + 1] = secondPixel;
+                }
+                texture.PaletteData = reader.ReadBytes(0x40);
+            }
+            else
+            {
+                throw new Exception($"Unknown PDWTexture pixel format '{texture.PixelFormat}'.");
+            }
+
+            texture.Bitmap = new Bitmap(texture.Width, texture.Height, PixelFormat.Format32bppArgb);
+
+            for (int i = 0; i < texture.PixelData.Length; i++)
+            {
+                byte pixel = texture.PixelData[i];
+                byte r = texture.PaletteData[pixel * 4 + 0];
+                byte g = texture.PaletteData[pixel * 4 + 1];
+                byte b = texture.PaletteData[pixel * 4 + 2];
+                byte a = texture.PaletteData[pixel * 4 + 3];
+
+                int x = i % texture.Width;
+                int y = i / texture.Width;
+
+                texture.Bitmap.SetPixel(x, y, Color.FromArgb(a, r, g, b));
+            }
+
+            return texture;
         }
 
 
