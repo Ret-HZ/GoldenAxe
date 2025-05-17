@@ -15,19 +15,47 @@ namespace Golden_Axe.PDWEditor
     /// </summary>
     public partial class PDWEditorWindow : MetroWindow
     {
-        CDIFile File;
+        CDIFile CDIFile;
         PDW PDW;
         PDWTexture CurrentTexture;
+
+        string RawFilePath;
+        bool IsUsingRawFile;
+
+        public bool IsClosedForError;
+
 
         public PDWEditorWindow(CDIFile file)
         {
             InitializeComponent();
-            File = file;
-            PDW = PDWReader.ReadPDW(File.GetContent());
-            Title = $"{File.Name}";
+            CDIFile = file;
+            PDW = PDWReader.ReadPDW(CDIFile.GetContent());
+            Title = $"{CDIFile.Name}";
             CurrentTexture = PDW.Textures[0];
             SetInfoLabels();
             SetImage();
+        }
+
+
+        public PDWEditorWindow(string rawFilePath)
+        {
+            InitializeComponent();
+            RawFilePath = rawFilePath;
+            IsUsingRawFile = true;
+            try
+            {
+                PDW = PDWReader.ReadPDW(File.ReadAllBytes(RawFilePath));
+                Title = $"{Path.GetFileName(RawFilePath)}";
+                CurrentTexture = PDW.Textures[0];
+                SetInfoLabels();
+                SetImage();
+            }
+            catch (Exception ex)
+            {
+                IsClosedForError = true;
+                Util.ShowMessageBox($"An error has occurred while trying to read the PDW file.\n\n{ex.Message}", "Error");
+                this.Close();
+            }
         }
 
 
@@ -69,7 +97,14 @@ namespace Golden_Axe.PDWEditor
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = File.GetNameWithoutExtension();
+            if (IsUsingRawFile)
+            {
+                dlg.FileName = Path.GetFileNameWithoutExtension(RawFilePath);
+            }
+            else
+            {
+                dlg.FileName = CDIFile.GetNameWithoutExtension();
+            }
             dlg.DefaultExt = ".png";
             dlg.Filter = "PNG (.png)|*.png";
 
@@ -96,7 +131,31 @@ namespace Golden_Axe.PDWEditor
                 CurrentTexture.SetBitmap(bitmap);
                 SetImage();
                 SetInfoLabels();
-                File.SetContent(PDWWriter.WritePDWToArray(PDW));
+            }
+        }
+
+
+        /// <summary>
+        /// Click event for the "Save" button. Will save the currently opened texture
+        /// </summary>
+        private void btn_Save_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsUsingRawFile)
+            {
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                dlg.FileName = Path.GetFileNameWithoutExtension(RawFilePath);
+                dlg.DefaultExt = ".PDW";
+                dlg.Filter = "PDW Textures (*.PDW)|*.PDW";
+
+                Nullable<bool> result = dlg.ShowDialog();
+                if (result == true)
+                {
+                    File.WriteAllBytes(dlg.FileName, PDWWriter.WritePDWToArray(PDW));
+                }
+            }
+            else
+            {
+                CDIFile.SetContent(PDWWriter.WritePDWToArray(PDW));
             }
         }
 

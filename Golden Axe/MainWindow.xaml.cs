@@ -8,6 +8,7 @@ using System;
 using System.Windows.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Threading.Tasks;
+using Golden_Axe.PDWEditor;
 
 namespace Golden_Axe
 {
@@ -215,6 +216,21 @@ namespace Golden_Axe
                 });
 
                 await controller.CloseAsync();
+            }
+        }
+
+
+        private void mi_Tools_OpenRaw_PDW_Click(object sender, RoutedEventArgs e)
+        {
+            string? path = OpenFileDialogGeneric(
+                "PDW Textures (*.PDW)|*.PDW",
+                "All files (*.*)|*.*"
+            );
+
+            if (path != null)
+            {
+                PDWEditorWindow pdwEditorWindow = new PDWEditorWindow(path);
+                if (!pdwEditorWindow.IsClosedForError) pdwEditorWindow.Show();
             }
         }
     }

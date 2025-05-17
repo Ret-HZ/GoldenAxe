@@ -35,10 +35,12 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             
             <Button x:Name="btn_Export" Grid.Column="0" Content="Export" Click="btn_Export_Click"/>
             <Button x:Name="btn_Import" Grid.Column="1" Content="Import" Click="btn_Import_Click"/>
+            <Button x:Name="btn_Save" Grid.Column="2" Content="Save" Click="btn_Save_Click"/>
         </Grid>
     </Grid>
 </mah:MetroWindow>
