@@ -37,6 +37,11 @@ namespace AceUtils.CDI
         public ushort Unknown2 { get; set; }
 
         /// <summary>
+        /// The <see cref="CDIFolder"/> this file belongs to.
+        /// </summary>
+        public CDIFolder ParentDirectory { get; internal set; }
+
+        /// <summary>
         /// File content.
         /// </summary>
         private byte[] Content { get; set; }

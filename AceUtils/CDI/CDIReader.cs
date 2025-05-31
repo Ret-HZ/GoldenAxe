@@ -82,13 +82,14 @@ namespace AceUtils.CDI
                             file.SetContentRaw(reader.ReadBytes(fileSize));
                         }
 
-                        folder.Files.Add(file.Name, file);
+                        folder.AddFile(file);
                         regfile.PathCache.Add($"{folder.Name}/{file.Name}");
                     }
 
                     reader.Stream.PopPosition();
                 }
 
+                folder.ParentCDI = regfile;
                 regfile.Folders.Add(folder.Name, folder);
             }
 

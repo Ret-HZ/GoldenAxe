@@ -28,7 +28,12 @@ namespace AceUtils.CDI
         /// <summary>
         /// Folder contents.
         /// </summary>
-        public Dictionary<string, CDIFile> Files { get; internal set; }
+        internal Dictionary<string, CDIFile> Files { get; set; }
+
+        /// <summary>
+        /// The REGFILE this folder belongs to.
+        /// </summary>
+        public CDI ParentCDI { get; internal set; }
 
 
 
@@ -45,6 +50,43 @@ namespace AceUtils.CDI
             }
 
             return returnList;
+        }
+
+
+        /// <summary>
+        /// Adds a <see cref="CDIFile"/> to the folder.
+        /// </summary>
+        /// <param name="file">The <see cref="CDIFile"/> to add.</param>
+        public void AddFile(CDIFile file)
+        {
+            CDIFolder previousDirectory = file.ParentDirectory;
+            if (previousDirectory != null)
+            {
+                previousDirectory.RemoveFile(file);
+            }
+            
+            Files[file.Name] = file;
+            file.ParentDirectory = this;
+        }
+
+
+        /// <summary>
+        /// Removes a <see cref="CDIFile"/> from the folder.
+        /// </summary>
+        /// <param name="file">The <see cref="CDIFile"/> to remove.</param>
+        public void RemoveFile(CDIFile file)
+        {
+            if (Files.ContainsKey(file.Name))
+            {
+                Files.Remove(file.Name);
+                string filePath = $"{Name}/{file.Name}";
+                if (ParentCDI.PathCache.Contains(filePath))
+                {
+                    ParentCDI.PathCache.Remove(filePath);
+                }
+            }
+
+            file.ParentDirectory = null;
         }
 
 
