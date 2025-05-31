@@ -33,7 +33,8 @@ namespace Golden_Axe.CDIExplorer
 
         private void UpdateFooterSelectionInfo(CDIFolder folder)
         {
-            lbl_FooterSelectionInfo.Content = $"{folder.Files.Count} {(folder.Files.Count == 1 ? "file" : "files")} in selected folder";
+            int fileCount = folder.GetFiles().Count;
+            lbl_FooterSelectionInfo.Content = $"{fileCount} {(fileCount == 1 ? "file" : "files")} in selected folder";
         }
 
 

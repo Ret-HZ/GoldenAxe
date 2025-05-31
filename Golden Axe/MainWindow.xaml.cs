@@ -184,7 +184,7 @@ namespace Golden_Axe
                         int totalFiles = 0;
                         foreach (var folder in explorer.REGFILE.GetFolders())
                         {
-                            totalFiles += folder.Files.Count;
+                            totalFiles += folder.GetFiles().Count;
                         }
                         controller.Minimum = 1;
                         controller.Maximum = totalFiles;
