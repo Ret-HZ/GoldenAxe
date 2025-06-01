@@ -1,5 +1,6 @@
 ﻿using AceUtils.CDI;
 using Golden_Axe.PDWEditor;
+using Golden_Axe.PMDEditor;
 
 namespace Golden_Axe.CDIExplorer
 {
@@ -12,6 +13,12 @@ namespace Golden_Axe.CDIExplorer
                 case "PDW":
                     {
                         PDWEditorWindow pdwEditor = new PDWEditorWindow(file);
+                        pdwEditor.Show();
+                        break;
+                    }
+                case "PMD":
+                    {
+                        PMDEditorWindow pdwEditor = new PMDEditorWindow(file);
                         pdwEditor.Show();
                         break;
                     }

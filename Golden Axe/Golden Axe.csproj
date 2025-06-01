@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="HelixToolkit" Version="2.27.0" />
+    <PackageReference Include="HelixToolkit.Wpf" Version="2.27.0" />
+    <PackageReference Include="HelixToolkit.Wpf.SharpDX" Version="2.27.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
   </ItemGroup>
 

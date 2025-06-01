@@ -1,0 +1,58 @@
+﻿<mah:MetroWindow x:Class="Golden_Axe.PMDEditor.PMDEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:local="clr-namespace:Golden_Axe.PMDEditor"
+        mc:Ignorable="d"
+        Title="PMD Editor" Height="450" Width="800">
+    <mah:MetroWindow.DataContext>
+        <local:PMDEditorViewModel></local:PMDEditorViewModel>
+    </mah:MetroWindow.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <hx:Viewport3DX x:Name="viewport3dx_ModelViewport" Grid.Row="0" EffectsManager="{Binding EffectsManager}" Camera="{Binding Camera}" ShowCoordinateSystem="True" FXAALevel="High" ShowTriangleCountInfo="True" Loaded="viewport3dx_ModelViewport_Loaded" Background="Gray">
+            <hx:DirectionalLight3D Color="Gray" Direction="-1,-1,-1"/>
+            <hx:DirectionalLight3D Color="Gray" Direction="1,-1,-1"/>
+            <hx:AmbientLight3D Color="#444444"/>
+            <hx:DirectionalLight3D x:Name="CameraLight" Color="White" Direction="0,0,-1" />
+        </hx:Viewport3DX>
+
+        <Label Grid.Row="0" HorizontalAlignment="Center" IsHitTestVisible="False" Foreground="Black" Content="Golden Axe model displays are only an approximation and may not be 100% accurate to in-game visuals."/>
+
+        <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5">
+            <Button x:Name="btn_ToggleBones" Width="100" Content="Show bones" Margin="0,0,0,3" Click="btn_ToggleBones_Click"/>
+            <Button x:Name="btn_ToggleVertices" Width="100" Content="Show vertices" Click="btn_ToggleVertices_Click"/>
+            <Label Margin="0,10,0,0" Foreground="Black" Content="Texture:"/>
+            <ComboBox x:Name="combobox_Textures" Width="100" SelectionChanged="combobox_Textures_SelectionChanged"/>
+            <Button x:Name="btn_TexturesBrowse" Width="100" Visibility="Collapsed" Content="Browse" Click="btn_TexturesBrowse_Click"/>
+            <Label Margin="0,10,0,0" Foreground="Black" Content="Mesh:"/>
+            <ComboBox x:Name="combobox_Meshes" Width="100" SelectionChanged="combobox_Meshes_SelectionChanged"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox x:Name="textbox_FilePath" Grid.Column="0" IsReadOnly="True" TextAlignment="Center" Text=""/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="btn_SaveAs" Grid.Column="0" Margin="3" Content="Save as" IsEnabled="False"/>
+            <Button x:Name="btn_Load" Grid.Column="1" Margin="3" Content="Load" IsEnabled="False"/>
+        </Grid>
+    </Grid>
+</mah:MetroWindow>

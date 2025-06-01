@@ -29,6 +29,7 @@
                 <MenuItem x:Name="mi_Tools_ExtractAll" Header="Extract all" Click="mi_Tools_ExtractAll_Click" IsEnabled="False"/>
                 <MenuItem Header="Open raw">
                     <MenuItem x:Name="mi_Tools_OpenRaw_PDW" Header="PDW" Click="mi_Tools_OpenRaw_PDW_Click"/>
+                    <MenuItem x:Name="mi_Tools_OpenRaw_PMD" Header="PMD" Click="mi_Tools_OpenRaw_PMD_Click"/>
                 </MenuItem>
             </MenuItem>
         </Menu>

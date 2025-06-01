@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Threading.Tasks;
 using Golden_Axe.PDWEditor;
+using Golden_Axe.PMDEditor;
 
 namespace Golden_Axe
 {
@@ -231,6 +232,21 @@ namespace Golden_Axe
             {
                 PDWEditorWindow pdwEditorWindow = new PDWEditorWindow(path);
                 if (!pdwEditorWindow.IsClosedForError) pdwEditorWindow.Show();
+            }
+        }
+
+
+        private void mi_Tools_OpenRaw_PMD_Click(object sender, RoutedEventArgs e)
+        {
+            string? path = OpenFileDialogGeneric(
+                "PMD Models (*.PMD)|*.PMD",
+                "All files (*.*)|*.*"
+            );
+
+            if (path != null)
+            {
+                PMDEditorWindow pmdEditorWindow = new PMDEditorWindow(path);
+                if (!pmdEditorWindow.IsClosedForError) pmdEditorWindow.Show();
             }
         }
     }
