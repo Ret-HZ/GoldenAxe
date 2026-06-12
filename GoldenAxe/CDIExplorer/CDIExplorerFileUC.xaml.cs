@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Golden_Axe.CDIExplorer
+namespace GoldenAxe.CDIExplorer
 {
     /// <summary>
     /// Interaction logic for CDIExplorerFileUC.xaml
@@ -58,14 +58,14 @@ namespace Golden_Axe.CDIExplorer
         {
             if (IsSelected)
             {
-                try
-                {
+                //try
+                //{
                     FileEditorHandler.OpenFileEditor(File);
-                }
-                catch (Exception ex)
-                {
-                    Util.ShowMessageBox($"An error has occurred when attempting to open the file.\n\n{ex.Message}", "Error");
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Util.ShowMessageBox($"An error has occurred when attempting to open the file.\n\n{ex.Message}", "Error");
+                //}
             }
             else
             {

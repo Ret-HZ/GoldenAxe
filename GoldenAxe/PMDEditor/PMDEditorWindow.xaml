@@ -1,11 +1,11 @@
-﻿<mah:MetroWindow x:Class="Golden_Axe.PMDEditor.PMDEditorWindow"
+﻿<mah:MetroWindow x:Class="GoldenAxe.PMDEditor.PMDEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-        xmlns:local="clr-namespace:Golden_Axe.PMDEditor"
+        xmlns:local="clr-namespace:GoldenAxe.PMDEditor"
         mc:Ignorable="d"
         Title="PMD Editor" Height="450" Width="800">
     <mah:MetroWindow.DataContext>

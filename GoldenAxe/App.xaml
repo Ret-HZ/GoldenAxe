@@ -1,7 +1,7 @@
-﻿<Application x:Class="Golden_Axe.App"
+﻿<Application x:Class="GoldenAxe.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Golden_Axe"
+             xmlns:local="clr-namespace:GoldenAxe"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>

@@ -1,8 +1,8 @@
 ﻿using AceUtils.CDI;
-using Golden_Axe.PDWEditor;
-using Golden_Axe.PMDEditor;
+using GoldenAxe.PDWEditor;
+using GoldenAxe.PMDEditor;
 
-namespace Golden_Axe.CDIExplorer
+namespace GoldenAxe.CDIExplorer
 {
     public static class FileEditorHandler
     {

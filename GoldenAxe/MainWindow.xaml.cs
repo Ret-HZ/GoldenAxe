@@ -8,10 +8,10 @@ using System;
 using System.Windows.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Threading.Tasks;
-using Golden_Axe.PDWEditor;
-using Golden_Axe.PMDEditor;
+using GoldenAxe.PDWEditor;
+using GoldenAxe.PMDEditor;
 
-namespace Golden_Axe
+namespace GoldenAxe
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

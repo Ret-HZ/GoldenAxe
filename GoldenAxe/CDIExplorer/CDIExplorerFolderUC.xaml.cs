@@ -5,7 +5,7 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Golden_Axe.CDIExplorer
+namespace GoldenAxe.CDIExplorer
 {
     /// <summary>
     /// Interaction logic for CDIExplorerFolderUC.xaml

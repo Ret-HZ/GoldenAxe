@@ -1,10 +1,10 @@
-﻿<mah:MetroWindow x:Class="Golden_Axe.PDWEditor.PDWEditorWindow"
+﻿<mah:MetroWindow x:Class="GoldenAxe.PDWEditor.PDWEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:local="clr-namespace:Golden_Axe.PDWEditor"
+        xmlns:local="clr-namespace:GoldenAxe.PDWEditor"
         mc:Ignorable="d"
         Title="PDW Editor" Height="450" Width="800">
     <Grid>

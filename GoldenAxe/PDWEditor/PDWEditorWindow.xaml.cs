@@ -8,7 +8,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace Golden_Axe.PDWEditor
+namespace GoldenAxe.PDWEditor
 {
     /// <summary>
     /// Interaction logic for PDWEditor.xaml

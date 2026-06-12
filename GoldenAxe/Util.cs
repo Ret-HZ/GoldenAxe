@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 using System.Windows;
 using System.Linq;
 
-namespace Golden_Axe
+namespace GoldenAxe
 {
     internal static class Util
     {

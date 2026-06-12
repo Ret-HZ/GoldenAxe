@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 
-namespace Golden_Axe.CDIExplorer
+namespace GoldenAxe.CDIExplorer
 {
     /// <summary>
     /// Interaction logic for CDIExplorerDirectoryUC.xaml

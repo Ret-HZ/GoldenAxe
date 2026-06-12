@@ -17,7 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Golden_Axe.PMDEditor
+namespace GoldenAxe.PMDEditor
 {
     /// <summary>
     /// Interaction logic for PMDEditorWindow.xaml
