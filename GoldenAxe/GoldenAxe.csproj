@@ -34,4 +34,24 @@
     <Resource Include="Resources\Icons\Folder.png" />
   </ItemGroup>
 
+  
+  <!-- Git commit hash injection -->
+  <PropertyGroup>
+    <CommitPrefix>dev</CommitPrefix>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <CommitPrefix>release</CommitPrefix>
+  </PropertyGroup>
+
+  <Target Name="GenerateGitCommitFile" BeforeTargets="CoreCompile">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitHash" />
+    </Exec>
+    <WriteLinesToFile File="$(IntermediateOutputPath)GitCommitInfo.cs" Lines="[assembly: System.Reflection.AssemblyMetadata(&quot;commithash&quot;, &quot;$(CommitPrefix)-$(GitCommitHash)&quot;)]" Overwrite="true" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)GitCommitInfo.cs" />
+    </ItemGroup>
+  </Target>
+
 </Project>

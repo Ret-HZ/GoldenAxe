@@ -1,12 +1,13 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
-using System.Windows;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace GoldenAxe
 {
@@ -17,9 +18,27 @@ namespace GoldenAxe
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
-            string name = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
-            string title = String.Format("{0} {1}", name, version);
+            string name = GetAssemblyProductName();
+            string title = String.Format("{0} {1} {2}", name, version, GetCommitHash());
             return title;
+        }
+
+
+        public static string GetCommitHash()
+        {
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var attr = (AssemblyMetadataAttribute)assembly.GetCustomAttribute(typeof(AssemblyMetadataAttribute));
+            return attr.Value;
+        }
+
+
+        /// <summary>
+        /// Gets the product name of the application according to the <see cref="AssemblyProductAttribute"/>.
+        /// </summary>
+        /// <returns>The product name.</returns>
+        public static string GetAssemblyProductName()
+        {
+            return Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyProductAttribute>().FirstOrDefault().Product;
         }
 
 
