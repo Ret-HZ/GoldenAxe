@@ -47,17 +47,5 @@ namespace AceUtils.CDI
             "MS118BMJP/MES_122.MES",
             "MS118BMSP/MES_122.MES",
         };
-
-
-        internal static List<string> X_PROTOTYPE_20060816 = new List<string>()
-        {
-            "GRD05/GRD05A0.ANM",
-        };
-
-
-        internal static List<string> X_PROTOTYPE_20060801 = new List<string>()
-        {
-            "GRD05/GRD05A0.ANM",
-        };
     }
 }

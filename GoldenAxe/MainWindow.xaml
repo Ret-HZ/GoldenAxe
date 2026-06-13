@@ -20,8 +20,6 @@
                 <MenuItem x:Name="mi_OpenRegfile" Header="Open REGFILE">
                     <MenuItem Header="Skies of Deception" Click="OpenRegfileX"/>
                     <MenuItem Header="Joint Assault" Click="OpenRegfileX2"/>
-                    <MenuItem Header="Skies of Deception (Aug 16, 2006 prototype)" Click="OpenRegfileX_PROTOTYPE_20060816"/>
-                    <MenuItem Header="Skies of Deception (Aug 1, 2006 prototype)" Click="OpenRegfileX_PROTOTYPE_20060801"/>
                 </MenuItem>
                 <MenuItem x:Name="mi_SaveRegfile" Header="Save REGFILE" Click="mi_SaveRegfile_Click" IsEnabled="False"/>
             </MenuItem>

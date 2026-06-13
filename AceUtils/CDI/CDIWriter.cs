@@ -33,7 +33,7 @@ namespace AceUtils.CDI
             {
                 writer.Write(folder.Name, 0xA, false, null);
 
-                if (regfile.Version == Enum.CDIVersion.X || regfile.Version == Enum.CDIVersion.X_PROTOTYPE_20060816 || regfile.Version == Enum.CDIVersion.X_PROTOTYPE_20060801)
+                if (regfile.Version == Enum.CDIVersion.X)
                 {
                     writer.Write(folder.Unknown1);
                     writer.Write(folder.Unknown2);

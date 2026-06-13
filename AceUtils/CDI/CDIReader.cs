@@ -37,17 +37,13 @@ namespace AceUtils.CDI
                 DummyFiles = CDIDummyFiles.X;
             else if (version == CDIVersion.X2)
                 DummyFiles = CDIDummyFiles.X2;
-            else if (version == CDIVersion.X_PROTOTYPE_20060816)
-                DummyFiles = CDIDummyFiles.X_PROTOTYPE_20060816;
-            else if (version == CDIVersion.X_PROTOTYPE_20060801)
-                DummyFiles = CDIDummyFiles.X_PROTOTYPE_20060801;
 
             //Read folders
             for (int i = 0; i < folderAmount; i++)
             {
                 CDIFolder folder = new CDIFolder();
                 folder.Name = reader.ReadString(0xA).Trim('\0');
-                if (version == CDIVersion.X || version == CDIVersion.X_PROTOTYPE_20060816 || version == CDIVersion.X_PROTOTYPE_20060801)
+                if (version == CDIVersion.X)
                 {
                     folder.Unknown1 = reader.ReadUInt16();
                     folder.Unknown2 = reader.ReadUInt16();

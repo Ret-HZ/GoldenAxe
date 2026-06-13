@@ -82,34 +82,6 @@ namespace GoldenAxe
         }
 
 
-        private void OpenRegfileX_PROTOTYPE_20060816(object sender, RoutedEventArgs e)
-        {
-            string? path = OpenFileDialogGeneric(
-                "REGFILE Archives (*.CDI)|*.CDI",
-                "All files (*.*)|*.*"
-            );
-
-            if (path != null)
-            {
-                OpenRegfile(CDIVersion.X_PROTOTYPE_20060816, path);
-            }
-        }
-
-
-        private void OpenRegfileX_PROTOTYPE_20060801(object sender, RoutedEventArgs e)
-        {
-            string? path = OpenFileDialogGeneric(
-                "REGFILE Archives (*.CDI)|*.CDI",
-                "All files (*.*)|*.*"
-            );
-
-            if (path != null)
-            {
-                OpenRegfile(CDIVersion.X_PROTOTYPE_20060801, path);
-            }
-        }
-
-
         private async void OpenRegfile(CDIVersion version, string path)
         {
             var controller = await this.ShowProgressAsync("Opening REGFILE", "Please wait...");
