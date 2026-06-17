@@ -30,9 +30,40 @@ namespace GoldenAxe.CDIExplorer
         {
             if (!File.IsDummy)
             {
-                if (File.GetExtension() == "PDW")
+                switch (File.GetExtension())
                 {
-                    img_Thumbnail.Source = Util.BitmapToImageSource(PDWReader.ReadPDW(File.GetContent()).Textures[0].GetBitmap());
+                    case "PDW":
+                        {
+                            img_Thumbnail.Source = Util.BitmapToImageSource(PDWReader.ReadPDW(File.GetContent()).Textures[0].GetBitmap());
+                            img_Thumbnail.Visibility = Visibility.Visible;
+                            icon_Thumbnail.Visibility = Visibility.Collapsed;
+                            break;
+                        }
+                    case "PMD":
+                        {
+                            icon_Thumbnail.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.CubeOutline;
+                            break;
+                        }
+                    case "ANM":
+                        {
+                            icon_Thumbnail.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.MotionPlayOutline;
+                            break;
+                        }
+                    case "PRM":
+                        {
+                            icon_Thumbnail.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.FileCodeOutline;
+                            break;
+                        }
+                    case "MES":
+                        {
+                            icon_Thumbnail.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.CommentTextOutline;
+                            break;
+                        }
+                    case "TTL":
+                        {
+                            icon_Thumbnail.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.FormatLetterCase;
+                            break;
+                        }
                 }
             }
         }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:GoldenAxe.CDIExplorer"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -22,10 +23,10 @@
             </Grid.ColumnDefinitions>
 
             <Button x:Name="btn_NavDirectoryBack" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" Click="btn_NavDirectoryBack_Click">
-                <Image Source="/Resources/Icons/ArrowPrevious.png" RenderOptions.BitmapScalingMode="HighQuality" Height="24" Width="32"/>
+                <iconPacks:PackIconMaterial Kind="ArrowLeft" Foreground="{DynamicResource MahApps.Brushes.Accent}" Height="24" Width="24"/>
             </Button>
             <Button x:Name="btn_NavDirectoryForward" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" Click="btn_NavDirectoryForward_Click">
-                <Image Source="/Resources/Icons/ArrowNext.png" RenderOptions.BitmapScalingMode="HighQuality" Height="24" Width="32"/>
+                <iconPacks:PackIconMaterial Kind="ArrowRight" Foreground="{DynamicResource MahApps.Brushes.Accent}" Height="24" Width="24"/>
             </Button>
             <TextBox x:Name="txt_NavPath" Grid.Column="2" Margin="10,5,10,5" IsReadOnly="True"/>
         </Grid>
